@@ -1,0 +1,23 @@
+{
+    "terminal.integrated.defaultProfile.linux": "",
+    "terminal.integrated.automationProfile.windows":  null,
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.profiles.windows": {
+
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Git Bash": {
+            "source": "Git Bash"
+        }
+    }
+}
