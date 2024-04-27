@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:investment_keeper/src/features/make_money_bank/data/remote_data_source/bank.dart';
+import 'package:investment_keeper/src/features/make_money_bank/data/remote_data_source/banks.dart';
+import 'package:investment_keeper/src/features/make_money_bank/domain/models/banks_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,44 +34,51 @@ class BanksDataScreen extends StatefulWidget {
 
 class _BanksDataScreenState extends State<BanksDataScreen> {
   final BanksRemoteDioDataSource _dataSource = BanksRemoteDioDataSource();
-  late Future<List<Map<String, dynamic>>?> _banksFuture;
+  Future<List<BanksModel>?>? _banksFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _banksFuture = _dataSource.getBanks();
+  Future<void> _fetchBanksData() async {
+    setState(() {
+      _banksFuture = _dataSource.getBanks();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>?>(
-        future: _banksFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else if (snapshot.hasData) {
-            final banks = snapshot.data!;
+    return Scaffold(
+      body: FutureBuilder<List<BanksModel>?>(
+          future: _banksFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else if (snapshot.hasData) {
+              final banks = snapshot.data!;
 
-            return ListView.builder(
-              itemCount: banks.length,
-              itemBuilder: (context, index) {
-                final bank = banks[index];
-                return ListTile(
-                  title: Text('${bank['name']}'),
-                  subtitle: Text(
-                      'End Promotion: ${bank['end_promotion']}, No Account Since: ${bank['no_account_since']}'),
-                );
-              },
-            );
-          } else {
-            return const Text('No data');
-          }
-        });
+              return ListView.builder(
+                itemCount: banks.length,
+                itemBuilder: (context, index) {
+                  final bank = banks[index];
+                  return ListTile(
+                    title: Text(bank.name),
+                    subtitle: Text(
+                        'End Promotion: ${bank.endPromotion}, No Account Since: ${bank.noAccountSince}'),
+                  );
+                },
+              );
+            } else {
+              return const Text('No data');
+            }
+          }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _fetchBanksData,
+        tooltip: 'Fetch Banks Data',
+        child: const Icon(Icons.refresh),
+      ),
+    );
   }
 }
