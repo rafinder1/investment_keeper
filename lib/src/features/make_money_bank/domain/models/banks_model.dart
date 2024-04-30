@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class BanksModel {
   const BanksModel({
     required this.id,
@@ -16,4 +18,12 @@ class BanksModel {
         name = json['name'],
         endPromotion = DateTime.parse(json['end_promotion']),
         noAccountSince = DateTime.parse(json['no_account_since']);
+
+  String getFormattedEndPromotion([String format = 'dd/MM/yyyy']) {
+    return DateFormat(format).format(endPromotion);
+  }
+
+  String getFormattedNoAccountSince([String format = 'dd/MM/yyyy']) {
+    return DateFormat(format).format(noAccountSince);
+  }
 }
