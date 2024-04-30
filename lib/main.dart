@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investment_keeper/src/core/enums.dart';
 import 'package:investment_keeper/src/features/make_money_bank/data/remote_data_source/banks.dart';
+import 'package:investment_keeper/src/features/make_money_bank/domain/repositories/banks_repository.dart';
 import 'package:investment_keeper/src/features/make_money_bank/presentation/cubit/make_money_banks_cubit.dart';
 
 void main() {
@@ -33,8 +34,11 @@ class BanksDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) =>
-            MakeMoneyBanksCubit(BanksRemoteDioDataSource())..fetchData(),
+        create: (context) => MakeMoneyBanksCubit(
+          BanksRepository(
+            banksRemoteDioDataSource: BanksRemoteDioDataSource(),
+          ),
+        )..fetchData(),
         child: BlocBuilder<MakeMoneyBanksCubit, MakeMoneyBanksState>(
           builder: (context, state) {
             switch (state.status) {
