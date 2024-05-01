@@ -6,7 +6,7 @@ class PromotionRepository {
 
   final PromotionsRemoteDioDataSource promotionsRemoteDioDataSource;
 
-  Future<List<PromotionModel>> getPromotionModel() async {
+  Future<List<PromotionModel>> getPromotionModelForBankId(int bankId) async {
     final json = await promotionsRemoteDioDataSource.getPromotions();
 
     if (json != null) {

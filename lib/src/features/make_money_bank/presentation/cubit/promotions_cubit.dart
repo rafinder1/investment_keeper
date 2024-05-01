@@ -10,7 +10,7 @@ class PromotionsCubit extends Cubit<PromotionsState> {
 
   final PromotionRepository promotionRemoteRepository;
 
-  Future<void> fetchData() async {
+  Future<void> fetchData(bankId) async {
     emit(
       PromotionsState(
         status: Status.loading,
@@ -18,7 +18,8 @@ class PromotionsCubit extends Cubit<PromotionsState> {
     );
 
     try {
-      final results = await promotionRemoteRepository.getPromotionModel();
+      final results =
+          await promotionRemoteRepository.getPromotionModelForBankId(bankId);
       emit(
         PromotionsState(
           status: Status.success,

@@ -23,7 +23,7 @@ class PromotionsPage extends StatelessWidget {
           PromotionRepository(
             promotionsRemoteDioDataSource: PromotionsRemoteDioDataSource(),
           ),
-        )..fetchData(),
+        )..fetchData(bank.id),
         child: Column(
           children: [
             Expanded(
