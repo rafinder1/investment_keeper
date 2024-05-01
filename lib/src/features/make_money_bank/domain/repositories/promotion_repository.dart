@@ -10,7 +10,12 @@ class PromotionRepository {
     final json = await promotionsRemoteDioDataSource.getPromotions();
 
     if (json != null) {
-      return json.map((item) => PromotionModel.fromJson(item)).toList();
+      final allPromotions =
+          json.map((item) => PromotionModel.fromJson(item)).toList();
+
+      return allPromotions
+          .where((element) => element.bankId == bankId)
+          .toList();
     } else {
       return [];
     }
