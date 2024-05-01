@@ -15,6 +15,9 @@ class PromotionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(bank.name),
+      ),
       body: BlocProvider(
         create: (context) => PromotionsCubit(
           PromotionRepository(
