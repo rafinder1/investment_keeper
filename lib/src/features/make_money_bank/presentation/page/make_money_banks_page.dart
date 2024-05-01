@@ -5,6 +5,7 @@ import 'package:investment_keeper/src/features/make_money_bank/data/remote_data_
 import 'package:investment_keeper/src/features/make_money_bank/domain/models/banks_model.dart';
 import 'package:investment_keeper/src/features/make_money_bank/domain/repositories/banks_repository.dart';
 import 'package:investment_keeper/src/features/make_money_bank/presentation/cubit/make_money_banks_cubit.dart';
+import 'package:investment_keeper/src/features/make_money_bank/presentation/page/promotions_page.dart';
 
 class BanksDataScreen extends StatelessWidget {
   const BanksDataScreen({super.key});
@@ -18,36 +19,40 @@ class BanksDataScreen extends StatelessWidget {
             banksRemoteDioDataSource: BanksRemoteDioDataSource(),
           ),
         )..fetchData(),
-        child: Expanded(
-          child: BlocBuilder<MakeMoneyBanksCubit, MakeMoneyBanksState>(
-            builder: (context, state) {
-              switch (state.status) {
-                case Status.initial:
-                  return const Center(
-                    child: Text('Initial state'),
-                  );
-                case Status.loading:
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case Status.success:
-                  return ListView(
-                    children: [
-                      for (final author in state.results)
-                        _BanksWidget(
-                          model: author,
+        child: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<MakeMoneyBanksCubit, MakeMoneyBanksState>(
+                builder: (context, state) {
+                  switch (state.status) {
+                    case Status.initial:
+                      return const Center(
+                        child: Text('Initial state'),
+                      );
+                    case Status.loading:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    case Status.success:
+                      return ListView(
+                        children: [
+                          for (final author in state.results)
+                            _BanksWidget(
+                              model: author,
+                            ),
+                        ],
+                      );
+                    case Status.error:
+                      return Center(
+                        child: Text(
+                          state.errorMessage ?? 'Unknown error',
                         ),
-                    ],
-                  );
-                case Status.error:
-                  return Center(
-                    child: Text(
-                      state.errorMessage ?? 'Unknown error',
-                    ),
-                  );
-              }
-            },
-          ),
+                      );
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -67,7 +72,13 @@ class _BanksWidget extends StatelessWidget {
         vertical: 10,
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => PromotionsPage(bank: model),
+            ),
+          );
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
