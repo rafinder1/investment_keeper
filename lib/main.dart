@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:investment_keeper/src/features/make_money_bank/presentation/page/make_money_banks_page.dart';
+import 'package:investment_keeper/src/features/home/presentation/page/home_page.dart';
+// import 'package:investment_keeper/src/features/make_money_bank/presentation/page/make_money_banks_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Scaffold(
-        body: BanksDataScreen(),
+        body: HomePage(),
       ),
     );
   }
